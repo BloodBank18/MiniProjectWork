@@ -1,0 +1,174 @@
+create Schema Shanu_MiniProject;
+create Table Shanu_MiniProject.BloodBank
+(
+BloodBankId int primary key,
+BloodBankName varchar(80) not null,
+[Address] varchar(300) not null,
+City varchar(50) not null,
+ContactNumber bigint not null,
+UserId varchar(50) not null,
+[Password] varchar(50) not null
+)
+=============================================
+=============================================
+
+create table Shanu_MiniProject.BloodDonor
+(
+BloodDonorId int primary key,
+FirstName varchar(50) not null,
+LastName varchar(50) not null,
+[Address] varchar(300) not null,
+City varchar(50) not null,
+MobileNo bigint not null,
+BloodGroup varchar(20) not null,
+)
+===================================================
+===================================================
+create Table Shanu_MiniProject.BloodDonationCamp
+(
+BloodDonationCampId int primary key,
+CampName varchar(50) not null,
+[Address] varchar(300) not null,
+City varchar(50) not null,
+BloodBankId int Foreign Key References Shanu_MiniProject.BloodBank(BloodBankId),
+CampStartDate Date not null,
+CampEndDate Date not null
+
+)
+===================================================
+===================================================
+drop table Shanu_MiniProject.BloodDonationCamp
+create Table Shanu_MiniProject.Hospital1
+(
+HospitalId int primary key,
+HospitalName varchar(100) not null,
+[Address] varchar(50) not null,
+City varchar(50) not null,
+ContactNo bigint not null
+)
+===================================================
+===================================================
+
+Create table Shanu_MiniProject.BloodDonorDonation
+(
+BloodDonationId int primary key,
+BloodDonorId int Foreign key References Shanu_MiniProject.BloodDonor(BloodDonorId),
+BloodDonationDate date not null,
+NumberOfBottle int not null,
+[Weight] decimal  not null,
+HBCount int not null,
+)
+======================================================
+======================================================
+create Table Shanu_MiniProject.BloodInventory1
+(
+BloodInventoryId int Primary key,
+BloodGroup varchar(50) not null,
+NumberOfBottles int not null,
+BloodBankId int Foreign Key References Shanu_MiniProject.BloodBank(BloodBankId),
+ExpiryDate date not null,
+HospitalId int Foreign key references Shanu_MiniProject.Hospital1(HospitalId)
+)
+=======================================================
+store procedure for Login
+=======================================================
+insert into Shanu_MiniProject.BloodBank(BloodBankId,BloodBankName,[Address],City,ContactNumber,UserId,[Password])
+values(
+1234,'ABC blood bank','Maharastra','Pune',9835795386,'shanu','shanu')
+create proc Shanu_MiniProject.uspIsLogin
+(
+@UserName varchar(50),
+@Password varchar(50)
+
+)
+as 
+begin 
+select BloodBankName from Shanu_MiniProject.BloodBank where  UserId=@UserName and [password]=@Password
+
+
+end
+=============================================================================================
+store procedure fo adding blood banking details
+
+================================================================================================
+create proc Shanu_MiniProject.uspAddBloodBankDetails
+(
+@BloodBankId int ,
+@BloodBankName varchar(80) ,
+@Address varchar(300),
+@City varchar(50) ,
+@ContactNumber bigint ,
+@UserId varchar(50),
+@Password varchar(50)
+)
+as
+ begin
+ insert into Shanu_MiniProject.BloodBank(BloodBankId,BloodBankName,[Address],City,ContactNumber,UserId,[Password])
+values(@BloodBankId,@BloodBankName,@Address,@City,@ContactNumber,@UserId,@Password)
+end
+================================================================================
+store procedure for getting all blood bank id
+================================================================================
+create proc Shanu_MiniProject.uspGetAllBloodBankID
+as 
+begin 
+select BloodBankId from Shanu_MiniProject.BloodBank
+end
+
+=========================================================================
+store procedure for search based on blood bank id
+=========================================================================
+create proc Shanu_MiniProject.uspSearch
+(
+@BloodBankId int
+)
+as
+begin 
+select * from Shanu_MiniProject.BloodBank where BloodBank.BloodBankId=@BloodBankId
+end
+=================================================================================
+search based on name
+=================================================================================
+create proc Shanu_MiniProject.uspSearch2
+(
+@BloodBankName varchar(50)
+)
+as
+begin 
+select * from Shanu_MiniProject.BloodBank where BloodBankName=@BloodBankName
+end
+=================================================================================
+get all blood bank name
+=====================================================================================
+create proc Shanu_MiniProject.uspGetAllBloodBankName
+as 
+begin 
+select BloodBankName from Shanu_MiniProject.BloodBank
+end
+========================================================================================
+store procedure for update table
+========================================================================================
+create proc Shanu_MiniProject.uspUpdateBloodBankDetails2
+(
+@BloodBankName varchar(50),
+@ContactNumber bigint,
+@Address varchar(50),
+@City varchar(50),
+@UserId varchar(50),
+@Password varchar(50)
+)
+as 
+begin
+update Shanu_MiniProject.BloodBank
+set ContactNumber=@ContactNumber, [Address]=@Address,City=@City,UserId=@UserId,[Password]=@Password
+where BloodBankName=@BloodBankName
+end
+===========================================================================================
+Get All Hospital Name
+===========================================================================================
+create proc Shanu_MiniProject.uspGetAllHospitalName
+
+as 
+begin 
+select HospitalName from Shanu_MiniProject.Hospital
+end
